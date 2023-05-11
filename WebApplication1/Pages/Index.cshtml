@@ -1,0 +1,163 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers;
+@addTagHelper *, PagedList.Core.Mvc;
+@using WebApplication1.Models;
+@using X.PagedList.Mvc.Core;
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    //var list = await Model.Get();
+    //bool Tap = Model.GetTap();
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<h3>Фильмы</h3>
+<br />
+<br />
+
+<a asp-page="./Create">Create</a>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by title:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Back to full list</a>
+        </p> 
+    </div>
+</form>
+
+<a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+    Sort by title
+</a>
+
+<br/>
+
+<a asp-page="./Index" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter">
+    Sort by date
+</a>
+
+<br/>
+
+<a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort" asp-route-currentFilter="@Model.CurrentFilter">
+    Sort by price
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*<a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                    @Html.DisplayNameFor(model => model.movie[0].Title)
+                </a>*@
+                @Html.DisplayNameFor(model => model.movie[0].Title)
+            </th>    
+            <th>
+                @*<a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+                    @Html.DisplayNameFor(model => model.movie[0].Date)
+                </a>*@
+                @Html.DisplayNameFor(model => model.movie[0].Date)
+            </th>
+            <th>
+                @*<a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort">
+                    @Html.DisplayNameFor(model => model.movie[0].Price)
+                </a>*@
+                @Html.DisplayNameFor(model => model.movie[0].Price)
+            </th>
+        </tr>
+        @*
+        <tr>
+            <th>
+                @Html.ActionLink("Title", "OnGetAsync", "Home", new { sortOrder=ViewBag.NameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Date", "Index", "Home", new { sortOrder="Date" })
+            </th>
+            <th>
+                @Html.ActionLink("Price", "Index", "Home", new { sortOrder=Model.PriceSort })
+            </th>
+        </tr>
+        *@
+    </thead>
+    <tbody>
+        @foreach (var item in Model.movie)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a asp-page="./Change" asp-route-id="@item.Id">Change</a>
+                    </td>
+                    <th>
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </th>
+                </tr>
+            }
+    </tbody>
+</table>
+@*<br />
+Page @(Model.movie.PageCount < Model.movie.PageNumber ? 0 : Model.movie.PageNumber) of @Model.movie.PageCount
+@Html.PagedListPager(Model.movie , page => Url.Action("Index", "Home", new { pageNumber = page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+*@
+@{
+    var prevDisabled = !Model.movie.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.movie.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.movie.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.movie.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+
+
+@*<thead>
+    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+        @Html.DisplayNameFor(model => model.movie[0].Title)
+    </a>
+    <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+        @Html.DisplayNameFor(model => model.movie[0].Date)
+    </a>
+    <a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort">
+        @Html.DisplayNameFor(model => model.movie[0].Price)
+    </a>
+</thead>
+
+@foreach (var item in list)
+{
+    <p>@item.Id</p>
+    <h5 align="center">Название: @item.Title</h5>
+    <p>Дата: @item.Date</p>
+    <p>Жанр: @item.GenreName</p>
+    <p>Кассовые сборы: @item.Price</p>
+    <p>Авторы:</p>
+    <br/>
+    for (int i = 0; i < item.Authors?.Count; i++)
+    {
+        <p>@item.Authors[i].Author.Nickname</p>
+        <p>@item.Authors[i].Author.Age</p>
+        <p>@item.Authors[i].Author.Email</p>
+        <br/>
+    }
+    <a asp-page="./Change" asp-route-id="@item.Id">Change</a> 
+}*@

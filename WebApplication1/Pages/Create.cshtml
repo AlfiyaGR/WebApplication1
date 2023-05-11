@@ -1,0 +1,59 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model WebApplication1.Pages.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+<!DOCTYPE html>
+
+<h1>Create</h1>
+
+<h4>Movie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="newMovie" name="_method" value="post" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.newMovie.Title)
+                @Html.EditorFor(model => model.newMovie.Title)
+                @Html.ValidationMessageFor(model => model.newMovie.Title)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.newMovie.Date)
+                @Html.EditorFor(model => model.newMovie.Date)
+                @Html.ValidationMessageFor(model => model.newMovie.Date)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.newMovie.Price)
+                @Html.EditorFor(model => model.newMovie.Price)
+                @Html.ValidationMessageFor(model => model.newMovie.Price)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        }
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1:3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
+    </script>
+}

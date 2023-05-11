@@ -1,0 +1,132 @@
+﻿@page 
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model WebApplication1.Pages.ChangeModel
+@{
+    ViewBag.Title = "Edit Movie";
+    //ViewData["Title"] = "Change page";
+}
+<!DOCTYPE html>
+
+@*<h3>Изменение данных</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" id="edit">
+            <input type="hidden" asp-for="movie.Id" name="_method" value="put"/>
+            <div class="form-group">
+                <label asp-for="movie.Title" class="control-label">Название фильма:</label>
+                <input type="text" class="form-control" name="Title" asp-for="movie.Title" required="required" />
+            </div>
+
+            <div>
+                <label type="date" class="control-label" asp-for="movie.Date">Дата: </label>
+                <input type="date" class="form-control" name="Date" asp-for="movie.Date">
+            </div>
+
+            <div>
+                <label type="text" class="control-label" asp-for="movie.GenreName">Жанр: </label>
+                <input type="text" class="form-control" name="GenreName" asp-for="movie.GenreName">
+            </div>
+
+            <div>
+                <label type="number" class="control-label" asp-for="movie.Price">Кассовые сборы: </label>
+                <input type="number" class="form-control" name="Price" asp-for="movie.Price">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <input type="submit" form="edit" value="Сохранить" class="btn btn-primary"/>
+    <input type="submit" form="edit" value="Сохранить и выйти" class="btn btn-primary"/>
+</div>*@
+
+<h1>Edit</h1>
+
+<h4>Movie</h4>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" id="movie">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="movie.Id" name="_method" value="put" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.movie.Title)
+                @Html.EditorFor(model => model.movie.Title)
+                @Html.ValidationMessageFor(model => model.movie.Title)
+                @*label asp-for="movie.Title" class="control-label"></label>
+                <input type="text" asp-for="movie.Title" name="Title" class="form-control" />
+                <span asp-validation-for="movie.Title" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.movie.Date)
+                @Html.EditorFor(model => model.movie.Date)
+                @Html.ValidationMessageFor(model => model.movie.Date)
+                @*<label asp-for="movie.Date" class="control-label"></label>
+                <input asp-for="movie.Date" name="Date" class="form-control" />
+                <span asp-validation-for="movie.Date" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.movie.Price)
+                @Html.EditorFor(model => model.movie.Price)
+                @Html.ValidationMessageFor(model => model.movie.Price)
+                @*<label asp-for="movie.Price" class="control-label"></label>
+                <input type="number" asp-for="movie.Price" name="Price" class="form-control" step="0.01" min="0" max="435" />
+                <span asp-validation-for="movie.Price" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@*
+<h2>
+    Edit
+</h2>
+
+@using (Html.BeginForm("EditAsync", "Home", FormMethod.Post))
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.movie.Id)
+        <p>
+            @Html.LabelFor(m => m.movie.Title, "Name")
+            <br />
+            @Html.EditorFor(m => m.movie.Title)
+            @Html.ValidationMessageFor(m => m.movie.Title)
+        </p>
+        <p>
+            @Html.LabelFor(m => m.movie.Date, "Name")
+            <br />
+            @Html.EditorFor(m => m.movie.Date)
+        </p>
+        <p>
+            @Html.LabelFor(m => m.movie.Price, "Name")
+            <br />
+            @Html.EditorFor(m => m.movie.Price)
+        </p>
+        <p><input type="submit" value="Send" /></p>
+    </fieldset>
+}
+*@
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // переопределение валидации на стороне клиента
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        }
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
+    </script>
+}

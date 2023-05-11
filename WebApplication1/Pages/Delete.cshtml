@@ -1,0 +1,40 @@
+﻿@page
+@model WebApplication1.Pages.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Delete</h3>
+
+<h5>Are you sure you want to delete this?</h5>
+
+<div>
+    <h6>Movie</h6>
+    <br/>
+
+    <form method="post">
+        <dl class="row">
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.movieDel.Title)
+        </dt>
+        <dt class="col-sm-10">
+                @Html.DisplayFor(model => model.movieDel.Title)
+        </dt>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.movieDel.Date)
+        </dt>
+        <dt class="col-sm-10">
+                @Html.DisplayFor(model => model.movieDel.Date)
+        </dt>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.movieDel.Price)
+        </dt>
+        <dt class="col-sm-10">
+                @Html.DisplayFor(model => model.movieDel.Price)
+        </dt>
+        </dl>
+        <input type="hidden" asp-for="movieDel.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to list</a>
+    </form>
+</div>
